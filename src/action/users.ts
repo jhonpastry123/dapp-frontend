@@ -23,3 +23,14 @@ export const deleteUser = (email) => {
       return err.response.data
     })
 }
+
+export const updateUser = (data) => {
+  return axios
+    .post(`${SERVER_URL}/update`, { ...data })
+    .then((res) => {
+      return res.data
+    })
+    .catch((err) => {
+      return err.response.data
+    })
+}

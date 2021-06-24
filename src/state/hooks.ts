@@ -68,7 +68,12 @@ export const useSetUserList = (state) => {
         dispatch(
           setUserList(
             value.data.map((item) => {
-              return { ...item, id: item._id, verKYC: !isEmpty(item.email_verified_at) }
+              return {
+                ...item,
+                id: item._id,
+                verEmail: !isEmpty(item.email_verified_at),
+                verKYC: !isEmpty(item.kyc_verified_at),
+              }
             }),
           ),
         )

@@ -25,9 +25,11 @@ export default function DataTable() {
     return <Text small>0</Text>
   }
   const renderCellLastLogin = ({ row, field }) => {
-    const data = isEmpty(row[field]) ? 'Not logged yet' : row[field]
-    return <Text small>{data}</Text>
+    const data = isEmpty(row[field]) ? 'Not logged yet' : new Date(row[field])
+
+    return <Text small>{data.toString()}</Text>
   }
+
   const renderVerifyStatus = ({ row }) => {
     const { verKYC, verEmail } = row
     return <VerifyCell verKYC={verKYC} verEmail={verEmail} />

@@ -31,8 +31,7 @@ export default function SettingCell({ data, handleReload }) {
   const [sending, setSending] = useState(false)
   const { toastWarning, toastSuccess } = useToast()
   const { t } = useTranslation()
-  console.log(data)
-  const [onPresent] = useModal(<UserEdit onDismiss userData={data} />)
+  const [onPresent] = useModal(<UserEdit handleReload={handleReload} onDismiss userData={data} />)
 
   const { email } = data
   const handleRemove = () => {
@@ -51,7 +50,7 @@ export default function SettingCell({ data, handleReload }) {
   }
   return (
     <CellContainer>
-      <FaRegEye />
+      <FaRegEye onClick={onPresent} />
       <FaRegTrashAlt onClick={handleRemove} />
     </CellContainer>
   )
