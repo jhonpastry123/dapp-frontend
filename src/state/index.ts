@@ -9,6 +9,7 @@ import achievementsReducer from './achievements'
 import blockReducer from './block'
 import collectiblesReducer from './collectibles'
 import authReducer from './auth'
+import userReducer from './user'
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -22,6 +23,7 @@ const store = configureStore({
     teams: teamsReducer,
     collectibles: collectiblesReducer,
     auth: authReducer,
+    user: userReducer,
   },
 })
 

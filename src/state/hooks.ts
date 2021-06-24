@@ -12,7 +12,7 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
-import history from 'routerHistory'
+import { isEmpty } from 'utils/form-validation'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -21,8 +21,20 @@ import {
   fetchCakeVaultUserData,
   fetchCakeVaultFees,
   setBlock,
+  setAuth,
+  setUserList,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, FarmsState, AuthState } from './types'
+import {
+  State,
+  Farm,
+  Pool,
+  ProfileState,
+  TeamsState,
+  AchievementState,
+  FarmsState,
+  AuthState,
+  UsersState,
+} from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -31,7 +43,7 @@ import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
-import { setAuth } from './auth'
+import { getUserList } from '../action/users'
 
 // Auth
 
@@ -45,6 +57,27 @@ export const useSetAuth = (userEmail = '') => {
 export const useAuth = (): AuthState => {
   const auth = useSelector((state: State) => state.auth)
   return auth
+}
+
+export const useSetUserList = (state) => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    getUserList().then((value) => {
+      if (value.success)
+        dispatch(
+          setUserList(
+            value.data.map((item) => {
+              return { ...item, id: item._id, verKYC: !isEmpty(item.email_verified_at) }
+            }),
+          ),
+        )
+    })
+  }, [dispatch, state])
+}
+
+export const useGetUserList = () => {
+  return useSelector((state: State) => state.user)
 }
 
 export const usePollFarmsData = (includeArchive = false) => {

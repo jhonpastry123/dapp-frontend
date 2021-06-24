@@ -28,6 +28,7 @@ const Team = lazy(() => import('./views/Teams/Team'))
 const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
+const UserList = lazy(() => import('./views/UserList'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -106,6 +107,9 @@ const App: React.FC = () => {
         </PrivateRoute>
         <PrivateRoute path="/nft">
           <Redirect to="/collectibles" />
+        </PrivateRoute>
+        <PrivateRoute path="/userlist" exact>
+          <UserList />
         </PrivateRoute>
         {/* 404 */}
         <CommonRouter>

@@ -152,6 +152,11 @@ export interface AuthState {
   isAuthenticated: boolean
   userEmail: string
 }
+// User
+
+export interface UsersState {
+  users: any
+}
 
 // Collectibles
 
@@ -274,4 +279,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   collectibles: CollectiblesState
+  user: UsersState
 }

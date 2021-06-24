@@ -10,11 +10,19 @@ const PageImageDiv = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     background-position: left center, right center;
   }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `
 const Container = styled.div`
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1.5fr 1fr;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 `
 const ImageContent = styled.div`
   width: 100%;

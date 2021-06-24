@@ -14,3 +14,4 @@ export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './
 export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'
 export { setBlock } from './block'
 export { setAuth } from './auth'
+export { setUserList } from './user'
