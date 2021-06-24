@@ -146,6 +146,12 @@ export interface BlockState {
   currentBlock: number
   initialBlock: number
 }
+// Auth
+
+export interface AuthState {
+  isAuthenticated: boolean
+  userEmail: string
+}
 
 // Collectibles
 
@@ -259,6 +265,7 @@ export interface PredictionsState {
 // Global state
 
 export interface State {
+  auth: AuthState
   achievements: AchievementState
   block: BlockState
   farms: FarmsState

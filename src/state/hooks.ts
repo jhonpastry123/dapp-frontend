@@ -12,6 +12,7 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
+import history from 'routerHistory'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
@@ -21,7 +22,7 @@ import {
   fetchCakeVaultFees,
   setBlock,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, FarmsState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, FarmsState, AuthState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -30,6 +31,21 @@ import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
+import { setAuth } from './auth'
+
+// Auth
+
+export const useSetAuth = (userEmail = '') => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(setAuth(userEmail))
+  }, [dispatch, userEmail])
+}
+
+export const useAuth = (): AuthState => {
+  const auth = useSelector((state: State) => state.auth)
+  return auth
+}
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch()
