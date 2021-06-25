@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Input, Text, VerifiedIcon, WarningIcon, Button } from '@pancakeswap/uikit'
@@ -7,30 +8,22 @@ import { updateProfile } from 'action/users'
 import useToast from 'hooks/useToast'
 import { isEmpty } from 'utils/form-validation'
 
-const UserInfoDiv = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 15px;
-  align-items: center;
-  padding-bottom: 20px;
-`
-const StateDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-`
 const Row = styled.div`
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
   gap: 15px;
+  @media screen and (max-width: 420px) {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  } ;
 `
 const TextDiv = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  width: 200px;
 `
 const FormDiv = styled.div`
   display: flex;
@@ -110,21 +103,16 @@ const ProfileForm: React.FC = () => {
   }
   return (
     <>
-      <UserInfoDiv>
-        <Text fontSize="25px">{DEmail}</Text>
-        <StateDiv>
-          <Text fontSize="20px">Email Verified: </Text>
-          {DverEmail ? <VerifiedIcon /> : <WarningIcon />}
-        </StateDiv>
-        <StateDiv>
-          <Text fontSize="20px">KYC Verified: </Text>
-          {DverKYC ? <VerifiedIcon /> : <WarningIcon />}
-        </StateDiv>
-      </UserInfoDiv>
       <FormDiv>
         <Row>
           <TextDiv>
-            <Text>UserName</Text>
+            <Text fontSize="20px">User Email</Text>
+          </TextDiv>
+          <Text>{DEmail}</Text>
+        </Row>
+        <Row>
+          <TextDiv>
+            <Text fontSize="20px">UserName</Text>
           </TextDiv>
           <Input
             value={DuserName}
@@ -135,7 +123,7 @@ const ProfileForm: React.FC = () => {
         </Row>
         <Row>
           <TextDiv>
-            <Text>Moblie</Text>
+            <Text fontSize="20px">Moblie</Text>
           </TextDiv>
           <Input
             type="number"
@@ -147,7 +135,7 @@ const ProfileForm: React.FC = () => {
         </Row>
         <Row>
           <TextDiv>
-            <Text>BirthDay</Text>
+            <Text fontSize="20px">BirthDay</Text>
           </TextDiv>
           <Input
             type="date"
@@ -157,7 +145,27 @@ const ProfileForm: React.FC = () => {
             }}
           />
         </Row>
+
+        <Row>
+          <TextDiv>
+            <Text fontSize="20px">Email Verified: </Text>
+          </TextDiv>
+          {DverEmail ? <VerifiedIcon /> : <WarningIcon />}
+        </Row>
+
+        <Row>
+          <TextDiv>
+            <Text fontSize="20px">KYC Verified: </Text>
+          </TextDiv>
+          {DverKYC ? <VerifiedIcon /> : <WarningIcon />}
+        </Row>
+
         <ActionRow>
+          <Link to="/submitKyc">
+            <Button scale="md" variant="danger">
+              {t('Submit KYC')}
+            </Button>
+          </Link>
           <Button scale="md" variant="primary" onClick={requestCallback}>
             {t('Save')}
           </Button>

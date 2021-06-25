@@ -77,8 +77,8 @@ export const useSetUserList = (state) => {
               return {
                 ...item,
                 id: item._id,
-                verEmail: !isEmpty(item.email_verified_at),
-                verKYC: !isEmpty(item.kyc_verified_at),
+                verEmail: item.email_verified_at,
+                verKYC: item.kyc_verified_at,
               }
             }),
           ),

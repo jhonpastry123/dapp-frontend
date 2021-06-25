@@ -17,7 +17,6 @@ const TextDiv = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
-  width: 200px;
 `
 const FormDiv = styled.div`
   display: flex;

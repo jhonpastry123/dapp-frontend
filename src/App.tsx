@@ -3,10 +3,12 @@ import { Router, Redirect, Switch } from 'react-router-dom'
 import { PrivateRoute, CommonRouter } from 'components/Router/index'
 import { ResetCSS } from '@pancakeswap/uikit'
 import jwt from 'jsonwebtoken'
+import SuspenseWithChunkError from 'components/SuspenseWithChunkError'
+import PageLoader from 'components/PageLoader'
 import BigNumber from 'bignumber.js'
-import useEagerConnect from 'hooks/useEagerConnect'
 import { isEmpty } from 'utils/form-validation'
-import { usePollCoreFarmData, useFetchProfile, usePollBlockNumber, useSetAuth } from 'state/hooks'
+import Logout from 'components/Logout/logout'
+import { useSetAuth } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import ToastListener from './components/ToastListener'
 import EasterEgg from './components/EasterEgg'
@@ -37,11 +39,6 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  usePollBlockNumber()
-  useEagerConnect()
-  useFetchProfile()
-  usePollCoreFarmData()
-
   const token = localStorage.getItem('auth_token')
   let userInfo = { useremail: '', userrole: '' }
   if (!isEmpty(token)) {
@@ -55,67 +52,72 @@ const App: React.FC = () => {
     <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
-      <Switch>
-        {/* AuthRouter */}
-        <CommonRouter path="/login">
-          <Login />
-        </CommonRouter>
-        <CommonRouter path="/register">
-          <Register />
-        </CommonRouter>
+      <SuspenseWithChunkError fallback={<PageLoader />}>
+        <Switch>
+          {/* AuthRouter */}
+          <CommonRouter path="/login">
+            <Login />
+          </CommonRouter>
+          <CommonRouter path="/register">
+            <Register />
+          </CommonRouter>
 
-        {/* Private Router */}
-        <PrivateRoute path="/" exact>
-          <Home />
-        </PrivateRoute>
-        <PrivateRoute path="/farms">
-          <Farms />
-        </PrivateRoute>
-        <PrivateRoute path="/pools">
-          <Pools />
-        </PrivateRoute>
-        <PrivateRoute path="/lottery">
-          <Lottery />
-        </PrivateRoute>
-        <PrivateRoute path="/ifo">
-          <Ifos />
-        </PrivateRoute>
-        <PrivateRoute path="/collectibles">
-          <Collectibles />
-        </PrivateRoute>
-        <PrivateRoute exact path="/teams">
-          <Teams />
-        </PrivateRoute>
-        <PrivateRoute path="/teams/:id">
-          <Team />
-        </PrivateRoute>
-        <PrivateRoute path="/profile">
-          <Profile />
-        </PrivateRoute>
-        <PrivateRoute path="/competition">
-          <TradingCompetition />
-        </PrivateRoute>
-        <PrivateRoute path="/prediction">
-          <Predictions />
-        </PrivateRoute>
-        {/* Redirect */}
-        <PrivateRoute path="/staking">
-          <Redirect to="/pools" />
-        </PrivateRoute>
-        <PrivateRoute path="/syrup">
-          <Redirect to="/pools" />
-        </PrivateRoute>
-        <PrivateRoute path="/nft">
-          <Redirect to="/collectibles" />
-        </PrivateRoute>
-        <PrivateRoute path="/userlist" exact admin>
-          <UserList />
-        </PrivateRoute>
-        {/* 404 */}
-        <CommonRouter>
-          <NotFound />
-        </CommonRouter>
-      </Switch>
+          {/* Private Router */}
+          <PrivateRoute path="/" exact>
+            <Home />
+          </PrivateRoute>
+          <PrivateRoute path="/farms">
+            <Farms />
+          </PrivateRoute>
+          <PrivateRoute path="/pools">
+            <Pools />
+          </PrivateRoute>
+          <PrivateRoute path="/lottery">
+            <Lottery />
+          </PrivateRoute>
+          <PrivateRoute path="/ifo">
+            <Ifos />
+          </PrivateRoute>
+          <PrivateRoute path="/collectibles">
+            <Collectibles />
+          </PrivateRoute>
+          <PrivateRoute exact path="/teams">
+            <Teams />
+          </PrivateRoute>
+          <PrivateRoute path="/teams/:id">
+            <Team />
+          </PrivateRoute>
+          <PrivateRoute path="/profile">
+            <Profile />
+          </PrivateRoute>
+          <PrivateRoute path="/competition">
+            <TradingCompetition />
+          </PrivateRoute>
+          <PrivateRoute path="/prediction">
+            <Predictions />
+          </PrivateRoute>
+          {/* Redirect */}
+          <PrivateRoute path="/staking">
+            <Redirect to="/pools" />
+          </PrivateRoute>
+          <PrivateRoute path="/syrup">
+            <Redirect to="/pools" />
+          </PrivateRoute>
+          <PrivateRoute path="/nft">
+            <Redirect to="/collectibles" />
+          </PrivateRoute>
+          <PrivateRoute path="/userlist" exact admin>
+            <UserList />
+          </PrivateRoute>
+          <PrivateRoute path="/logout">
+            <Logout />
+          </PrivateRoute>
+          {/* 404 */}
+          <CommonRouter>
+            <NotFound />
+          </CommonRouter>
+        </Switch>
+      </SuspenseWithChunkError>
 
       <EasterEgg iterations={2} />
       <ToastListener />

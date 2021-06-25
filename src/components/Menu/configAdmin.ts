@@ -127,6 +127,11 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     icon: 'GroupsIcon',
     href: '/userlist',
   },
+  {
+    label: t('Logout'),
+    icon: 'InfoIcon',
+    href: '/logout',
+  },
 ]
 
 export default config

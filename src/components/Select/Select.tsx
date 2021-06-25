@@ -94,6 +94,7 @@ const ListItem = styled.li`
 export interface SelectProps {
   options: OptionProps[]
   onChange?: (option: OptionProps) => void
+  selected?: any
 }
 
 export interface OptionProps {
@@ -101,7 +102,7 @@ export interface OptionProps {
   value: any
 }
 
-const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => {
+const Select: React.FunctionComponent<SelectProps> = ({ options, onChange, selected = '' }) => {
   const containerRef = useRef(null)
   const dropdownRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -120,11 +121,14 @@ const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => 
   }
 
   useEffect(() => {
+    if (selected !== '') {
+      setSelectedOptionIndex(options.findIndex((item) => item.value === selected))
+    }
     setContainerSize({
       width: dropdownRef.current.offsetWidth, // Consider border
       height: dropdownRef.current.offsetHeight,
     })
-  }, [])
+  }, [selected, options])
 
   return (
     <DropDownContainer isOpen={isOpen} ref={containerRef} {...containerSize}>

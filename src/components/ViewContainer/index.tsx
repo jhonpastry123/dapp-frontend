@@ -1,14 +1,14 @@
 import React from 'react'
-import PageLoader from 'components/PageLoader'
 import Menu from 'components/Menu'
-import SuspenseWithChunkError from 'components/SuspenseWithChunkError'
+import { usePollCoreFarmData, useFetchProfile, usePollBlockNumber } from 'state/hooks'
+import useEagerConnect from 'hooks/useEagerConnect'
 
 const ViewContainer: React.FC = ({ children }) => {
-  return (
-    <Menu>
-      <SuspenseWithChunkError fallback={<PageLoader />}>{children}</SuspenseWithChunkError>
-    </Menu>
-  )
+  usePollBlockNumber()
+  useEagerConnect()
+  useFetchProfile()
+  usePollCoreFarmData()
+  return <Menu>{children}</Menu>
 }
 
 export default ViewContainer

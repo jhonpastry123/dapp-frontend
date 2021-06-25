@@ -32,6 +32,9 @@ const TextDiv = styled.div`
   align-items: center;
   display: flex;
   width: 200px;
+  @media screen and (max-width: 420px) {
+    width: auto;
+  }
 `
 const ToogleDiv = styled.div`
   align-items: center;
@@ -131,6 +134,7 @@ export default function UserEdit({ onDismiss, userData, handleReload }) {
           </TextDiv>
           <ToogleDiv>
             <Select
+              selected={role}
               options={[
                 {
                   label: t('Admin'),

@@ -5,9 +5,10 @@ import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { isEmail, minLength, isEmpty } from 'utils/form-validation'
 import { signIn } from 'action/auth'
-import { useAuth } from 'state/hooks'
+import { useAuth, useSetAuth } from 'state/hooks'
 import history from 'routerHistory'
 import { getBrowser, getOS, getIp } from 'utils/getBrowser'
+import jwt from 'jsonwebtoken'
 
 // import { Input, Checkbox, Button, Text } from '@pancakeswap/uikit'
 
@@ -36,9 +37,13 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPass] = useState('')
   const [sending, setSending] = useState(false)
+  const [token, setToken] = useState({ useremail: '', userrole: '' })
+
   const { toastWarning, toastSuccess } = useToast()
   const { t } = useTranslation()
   const authState = useAuth()
+
+  useSetAuth(token)
 
   const handleChange = (type, value) => {
     switch (type) {
@@ -75,9 +80,10 @@ const Login: React.FC = () => {
         setSending(false)
         if (isEmpty(data.success)) return
         if (data.success) {
-          history.push('/')
           toastSuccess(t('Login'), t('Welcome!!!'))
           localStorage.setItem('auth_token', data.token)
+          const decode = jwt.decode(data.token)
+          setToken(decode)
         } else {
           toastWarning(t('Login Error'), data.message)
         }
