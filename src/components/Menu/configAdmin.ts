@@ -122,6 +122,11 @@ const config: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
     ],
   },
+  {
+    label: t('UserList'),
+    icon: 'GroupsIcon',
+    href: '/userlist',
+  },
 ]
 
 export default config

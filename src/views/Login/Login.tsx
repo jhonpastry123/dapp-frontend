@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Heading, Text } from '@pancakeswap/uikit'
+import { Heading, Text, useModal } from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
 import Form from './component/Form'
+import Forgot from './component/Forgot'
 
 const PageImageDiv = styled.div`
   background: url(/images/login-bg.png) #342d6e no-repeat;
@@ -36,8 +38,19 @@ const FormContainer = styled.div`
 const HeadingDiv = styled.div`
   padding-bottom: 20px;
 `
+const LinkItem = styled.span`
+  :hover {
+    color: #7a6eaa;
+    cursor: pointer;
+  }
+`
+const ForgotDiv = styled.div`
+  padding: 10px 0;
+`
 const Login: React.FC = () => {
   const { t } = useTranslation()
+  const [onPresent] = useModal(<Forgot onDismiss />)
+
   return (
     <Container>
       <PageImageDiv>
@@ -51,7 +64,24 @@ const Login: React.FC = () => {
           <Text fontSize="23px">{t('with your TokenLite Account')}</Text>
         </HeadingDiv>
         <Form />
-        <div>Don&lsquo;t have an account? Sign up here</div>
+        <div>
+          Don&lsquo;t have an account?
+          <Link to="/register">
+            <LinkItem> Sign up </LinkItem>
+          </Link>
+          here
+        </div>
+        <ForgotDiv>
+          If you forgot your password, please
+          <LinkItem
+            onClick={() => {
+              onPresent()
+            }}
+          >
+            {' '}
+            Click here
+          </LinkItem>
+        </ForgotDiv>
       </FormContainer>
     </Container>
   )

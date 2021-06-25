@@ -151,6 +151,11 @@ export interface BlockState {
 export interface AuthState {
   isAuthenticated: boolean
   userEmail: string
+  userRole: string
+}
+export interface AuthPayload {
+  useremail: string
+  userrole: string
 }
 // User
 
@@ -267,6 +272,10 @@ export interface PredictionsState {
   bets: BetData
 }
 
+export interface UserProfileState {
+  profile: any
+}
+
 // Global state
 
 export interface State {
@@ -279,5 +288,6 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   collectibles: CollectiblesState
-  user: UsersState
+  usermanage: UsersState
+  userProfile: UserProfileState
 }

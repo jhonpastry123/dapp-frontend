@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Modal, Input, Text, Toggle, Button } from '@pancakeswap/uikit'
+import { Modal, Input, Text, Toggle, Button, VerifiedIcon, WarningIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { isEmpty } from 'utils/form-validation'
 import { updateUser } from 'action/users'
 import useToast from 'hooks/useToast'
+import Select, { OptionProps } from 'components/Select/Select'
 
 const CellContainer = styled.div`
   display: flex;
@@ -55,7 +56,7 @@ export default function UserEdit({ onDismiss, userData, handleReload }) {
       name,
       role: dataRole,
       status: dataStatus,
-      verKyc: dataVerKyc,
+      verKYC: dataVerKyc,
       verEmail: dataVerEmial,
     } = userData
     const loginDate = isEmpty(lastLogin) ? 'Not Logged yet' : new Date(lastLogin)
@@ -69,7 +70,7 @@ export default function UserEdit({ onDismiss, userData, handleReload }) {
     setLastLogin(loginDate.toString())
   }, [userData])
 
-  const requestCallback = (event) => {
+  const requestCallback = () => {
     const data = { verEmail, verKyc, role, status, userEmail }
     updateUser(data).then((result) => {
       const { success, message } = result
@@ -81,6 +82,9 @@ export default function UserEdit({ onDismiss, userData, handleReload }) {
       }
       onDismiss()
     })
+  }
+  const handleSortOptionChange = (option: OptionProps): void => {
+    setRole(option.value)
   }
   return (
     <Modal title={t('User Info')} onDismiss={onDismiss}>
@@ -108,7 +112,7 @@ export default function UserEdit({ onDismiss, userData, handleReload }) {
             <Text>Email Verify</Text>
           </TextDiv>
           <ToogleDiv>
-            <Toggle onChange={() => setVerEmail(!verEmail)} checked={verEmail} />{' '}
+            {verEmail ? <VerifiedIcon /> : <WarningIcon />}
             <Text> {verEmail ? 'Verified' : 'Not Verified'}</Text>
           </ToogleDiv>
         </Row>
@@ -117,7 +121,7 @@ export default function UserEdit({ onDismiss, userData, handleReload }) {
             <Text>KYC Verify</Text>
           </TextDiv>
           <ToogleDiv>
-            <Toggle onChange={() => setVerKyc(!verKyc)} checked={verKyc} />{' '}
+            <Toggle onChange={() => setVerKyc(!verKyc)} checked={verKyc} />
             <Text> {verKyc ? 'Verified' : 'Not Verified'}</Text>
           </ToogleDiv>
         </Row>
@@ -126,7 +130,19 @@ export default function UserEdit({ onDismiss, userData, handleReload }) {
             <Text>Role</Text>
           </TextDiv>
           <ToogleDiv>
-            <Toggle onChange={() => setRole(!role)} checked={role} /> <Text> {role ? 'Admin' : 'User'}</Text>
+            <Select
+              options={[
+                {
+                  label: t('Admin'),
+                  value: true,
+                },
+                {
+                  label: t('User'),
+                  value: false,
+                },
+              ]}
+              onChange={handleSortOptionChange}
+            />
           </ToogleDiv>
         </Row>
         <Row>

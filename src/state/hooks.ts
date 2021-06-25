@@ -23,18 +23,9 @@ import {
   setBlock,
   setAuth,
   setUserList,
+  setUserProfile,
 } from './actions'
-import {
-  State,
-  Farm,
-  Pool,
-  ProfileState,
-  TeamsState,
-  AchievementState,
-  FarmsState,
-  AuthState,
-  UsersState,
-} from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, FarmsState, AuthState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -43,20 +34,35 @@ import { getCanClaim } from './predictions/helpers'
 import { transformPool } from './pools/helpers'
 import { fetchPoolsStakingLimitsAsync } from './pools'
 import { fetchFarmUserDataAsync, nonArchivedFarms } from './farms'
-import { getUserList } from '../action/users'
+import { getUserList, getUserProfile } from '../action/users'
 
 // Auth
 
-export const useSetAuth = (userEmail = '') => {
+export const useSetAuth = ({ useremail = '', userrole = '' }) => {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(setAuth(userEmail))
-  }, [dispatch, userEmail])
+    dispatch(setAuth({ useremail, userrole }))
+  }, [dispatch, useremail, userrole])
 }
 
 export const useAuth = (): AuthState => {
   const auth = useSelector((state: State) => state.auth)
   return auth
+}
+// Profile
+
+export const useSetProfile = (state, email) => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    getUserProfile(email).then((value) => {
+      if (value.success) dispatch(setUserProfile(value.data))
+    })
+  }, [dispatch, state, email])
+}
+
+export const useUserProfile = () => {
+  return useSelector((state: State) => state.userProfile)
 }
 
 export const useSetUserList = (state) => {
@@ -82,7 +88,7 @@ export const useSetUserList = (state) => {
 }
 
 export const useGetUserList = () => {
-  return useSelector((state: State) => state.user)
+  return useSelector((state: State) => state.usermanage)
 }
 
 export const usePollFarmsData = (includeArchive = false) => {

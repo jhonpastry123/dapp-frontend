@@ -1,6 +1,7 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { Input } from '@pancakeswap/uikit'
 import Content from './Content'
 
 export interface ITableProps {
@@ -20,7 +21,7 @@ const Container = styled.div`
 
 const TableWrapper = styled.div`
   overflow: visible;
-
+  padding: 10px;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -38,18 +39,33 @@ const StyledTable = styled.div`
 const TableContainer = styled.div`
   position: relative;
 `
-
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  input {
+    width: 30%;
+  }
+`
 const UserTable: React.FC<ITableProps> = (props) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
-  const { data, columns } = props
+  const [searchValue, setSearchValue] = useState('')
 
   return (
     <Container>
+      <SearchContainer>
+        <Input
+          value={searchValue}
+          onChange={(e) => {
+            setSearchValue(e.target.value)
+          }}
+        />
+      </SearchContainer>
       <TableContainer>
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
-            <Content />
+            <Content searchValue={searchValue} />
           </StyledTable>
         </TableWrapper>
       </TableContainer>

@@ -16,6 +16,7 @@ import history from './routerHistory'
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
 const Login = lazy(() => import('./views/Login'))
+const Profile = lazy(() => import('./views/UserProfile'))
 const Register = lazy(() => import('./views/Register'))
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
@@ -25,7 +26,6 @@ const NotFound = lazy(() => import('./views/NotFound'))
 const Collectibles = lazy(() => import('./views/Collectibles'))
 const Teams = lazy(() => import('./views/Teams'))
 const Team = lazy(() => import('./views/Teams/Team'))
-const Profile = lazy(() => import('./views/Profile'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
 const UserList = lazy(() => import('./views/UserList'))
@@ -43,11 +43,11 @@ const App: React.FC = () => {
   usePollCoreFarmData()
 
   const token = localStorage.getItem('auth_token')
-  let userInfo = ''
+  let userInfo = { useremail: '', userrole: '' }
   if (!isEmpty(token)) {
     const decode = jwt.decode(token)
-    const { username } = decode
-    userInfo = username
+    const { useremail, userrole } = decode
+    userInfo = { useremail, userrole }
   }
   useSetAuth(userInfo)
 
@@ -108,7 +108,7 @@ const App: React.FC = () => {
         <PrivateRoute path="/nft">
           <Redirect to="/collectibles" />
         </PrivateRoute>
-        <PrivateRoute path="/userlist" exact>
+        <PrivateRoute path="/userlist" exact admin>
           <UserList />
         </PrivateRoute>
         {/* 404 */}

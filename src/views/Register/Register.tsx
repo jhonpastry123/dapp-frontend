@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Heading, Text } from '@pancakeswap/uikit'
+import { Link } from 'react-router-dom'
 import Form from './component/Form'
 
 const PageImageDiv = styled.div`
@@ -36,6 +37,11 @@ const FormContainer = styled.div`
 const HeadingDiv = styled.div`
   padding-bottom: 20px;
 `
+const LinkItem = styled.span`
+  :hover {
+    color: #7a6eaa;
+  }
+`
 const Register: React.FC = () => {
   const { t } = useTranslation()
   return (
@@ -51,7 +57,13 @@ const Register: React.FC = () => {
           <Text fontSize="23px">{t('Create New TokenLite Account')}</Text>
         </HeadingDiv>
         <Form />
-        <div>Don&lsquo;t have an account? Sign up here</div>
+        <div>
+          Don&lsquo;t have an account?
+          <Link to="/login">
+            <LinkItem> Sign in </LinkItem>
+          </Link>
+          here
+        </div>
       </FormContainer>
     </Container>
   )

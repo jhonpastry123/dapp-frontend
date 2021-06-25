@@ -13,6 +13,28 @@ export const getUserList = () => {
     })
 }
 
+export const getUserProfile = (email) => {
+  return axios
+    .post(`${SERVER_URL}/getProfile`, { email })
+    .then((res) => {
+      return res.data
+    })
+    .catch((err) => {
+      return err.response.data
+    })
+}
+
+export const updateProfile = (data) => {
+  return axios
+    .post(`${SERVER_URL}/updateProfile`, { ...data })
+    .then((res) => {
+      return res.data
+    })
+    .catch((err) => {
+      return err.response.data
+    })
+}
+
 export const deleteUser = (email) => {
   return axios
     .post(`${SERVER_URL}/delete`, { email })

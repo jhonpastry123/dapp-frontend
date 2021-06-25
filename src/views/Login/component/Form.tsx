@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Input, Button } from '@pancakeswap/uikit'
-import jwt from 'jsonwebtoken'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { isEmail, minLength, isEmpty } from 'utils/form-validation'
 import { signIn } from 'action/auth'
 import { useAuth } from 'state/hooks'
 import history from 'routerHistory'
+import { getBrowser, getOS, getIp } from 'utils/getBrowser'
 
 // import { Input, Checkbox, Button, Text } from '@pancakeswap/uikit'
 
@@ -69,16 +69,19 @@ const Login: React.FC = () => {
       return
     }
     setSending(true)
-    signIn(email, password).then((data) => {
-      setSending(false)
-      if (isEmpty(data.success)) return
-      if (data.success) {
-        history.push('/')
-        toastSuccess(t('Login'), t('Welcome!!!'))
-        localStorage.setItem('auth_token', data.token)
-      } else {
-        toastWarning(t('Login Error'), data.message)
-      }
+    getIp().then((ip) => {
+      const deviceInfo = { ip, browser: getBrowser(), os: getOS() }
+      signIn(email, password, deviceInfo).then((data) => {
+        setSending(false)
+        if (isEmpty(data.success)) return
+        if (data.success) {
+          history.push('/')
+          toastSuccess(t('Login'), t('Welcome!!!'))
+          localStorage.setItem('auth_token', data.token)
+        } else {
+          toastWarning(t('Login Error'), data.message)
+        }
+      })
     })
   }
   useEffect(() => {

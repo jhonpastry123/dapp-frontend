@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { Text } from '@pancakeswap/uikit'
 import { useSetUserList, useGetUserList } from 'state/hooks'
@@ -7,10 +7,26 @@ import VerifyCell from './VerifyCell'
 import StatusCell from './StatusCell'
 import SettingCell from './SettingCell'
 
-export default function DataTable() {
+export default function DataTable({ searchValue }) {
+  const [tableData, setTableData] = useState([])
   const [reload, setReload] = useState(true)
-  useSetUserList(reload)
   const { users } = useGetUserList()
+  useSetUserList(reload)
+  useEffect(() => {
+    let isMount = true
+    if (isMount) {
+      if (!isEmpty(users)) {
+        const value = searchValue.toLowerCase()
+        const temp = users.filter(
+          (item) => item.email.toLowerCase().includes(value) || item.name.toLowerCase().includes(value),
+        )
+        setTableData(temp)
+      }
+    }
+    return () => {
+      isMount = false
+    }
+  }, [searchValue, users])
   const handleReload = () => {
     setReload(!reload)
   }
@@ -51,11 +67,11 @@ export default function DataTable() {
       renderCell,
     },
     { field: 'email', headerName: 'EMAIL', width: 190, renderHeader, renderCell },
-    { field: 'tokens', headerName: 'TOKENS', width: 120, renderHeader, renderCell: renderCellToken },
+    { field: 'tokens', headerName: 'TOKENS', width: 110, renderHeader, renderCell: renderCellToken },
     {
       field: 'verifiedStatus',
       headerName: 'VERIFIED STATUS',
-      width: 190,
+      width: 180,
       renderHeader,
       renderCell: renderVerifyStatus,
       filterable: false,
@@ -74,8 +90,8 @@ export default function DataTable() {
     },
   ]
   return (
-    <div style={{ height: 600, width: '100%' }}>
-      <DataGrid rows={users} columns={columns} pageSize={10} scrollbarSize={1} hideFooterRowCount />
+    <div style={{ height: 450, width: '100%' }}>
+      <DataGrid rows={tableData} columns={columns} pageSize={10} scrollbarSize={1} hideFooterRowCount />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import history from 'routerHistory'
 import { isEmail, maxLength, minLength, isEmpty } from 'utils/form-validation'
 import useToast from 'hooks/useToast'
 import { signUp } from 'action/auth'
+import firebaseClient from 'firebaseClient/firebase'
 
 const FromDiv = styled.div`
   & > input {
@@ -42,22 +43,32 @@ const RegisterForm: React.FC = () => {
     }
 
     if (password === '' || !minLength(password, 7)) {
-      toastWarning(t('Validation Error'), t('Please enter the your password correctly.'))
+      toastWarning(t('Validation Error'), t('Password must be at least 7 characters'))
       return
     }
     if (repassword !== password) {
       toastWarning(t('Validation Error'), t('Please check your repassword.'))
       return
     }
-    signUp(email, name, password).then((data) => {
-      if (isEmpty(data.success)) return
-      if (data.success) {
-        toastSuccess(t('Register'), t('You are registered successfully.'))
-        history.push('/login')
-      } else {
-        toastWarning(t('Register Error'), data.message)
-      }
-    })
+
+    firebaseClient
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(({ user }) => {
+        user.sendEmailVerification()
+        signUp(email, name, password).then((data) => {
+          if (isEmpty(data.success)) return
+          if (data.success) {
+            toastSuccess(t('Register'), t('You are registered successfully.'))
+            history.push('/login')
+          } else {
+            toastWarning(t('Register Error'), data.message)
+          }
+        })
+      })
+      .catch(() => {
+        toastWarning(t('Register Error'), 'There are some issuse for register')
+      })
   }
   const handleChange = (type, value) => {
     switch (type) {
