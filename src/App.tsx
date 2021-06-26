@@ -8,6 +8,7 @@ import PageLoader from 'components/PageLoader'
 import BigNumber from 'bignumber.js'
 import { isEmpty } from 'utils/form-validation'
 import Logout from 'components/Logout/logout'
+import setAuthToken from 'utils/setAuthToken'
 import { useSetAuth } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import ToastListener from './components/ToastListener'
@@ -43,6 +44,7 @@ const App: React.FC = () => {
   let userInfo = { useremail: '', userrole: '' }
   if (!isEmpty(token)) {
     const decode = jwt.decode(token)
+    setAuthToken(token)
     const { useremail, userrole } = decode
     userInfo = { useremail, userrole }
   }

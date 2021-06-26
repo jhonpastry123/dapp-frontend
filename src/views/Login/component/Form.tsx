@@ -9,6 +9,7 @@ import { useAuth, useSetAuth } from 'state/hooks'
 import history from 'routerHistory'
 import { getBrowser, getOS, getIp } from 'utils/getBrowser'
 import jwt from 'jsonwebtoken'
+import setAuthToken from 'utils/setAuthToken'
 
 // import { Input, Checkbox, Button, Text } from '@pancakeswap/uikit'
 
@@ -82,6 +83,7 @@ const Login: React.FC = () => {
         if (data.success) {
           toastSuccess(t('Login'), t('Welcome!!!'))
           localStorage.setItem('auth_token', data.token)
+          setAuthToken(data.token)
           const decode = jwt.decode(data.token)
           setToken(decode)
         } else {
