@@ -13,9 +13,9 @@ export const getUserList = () => {
     })
 }
 
-export const getUserProfile = (email) => {
+export const getUserProfile = () => {
   return axios
-    .post(`${SERVER_URL}/getProfile`, { email })
+    .get(`${SERVER_URL}/getProfile`)
     .then((res) => {
       return res.data
     })

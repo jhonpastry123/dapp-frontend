@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Input, Text, VerifiedIcon, WarningIcon, Button } from '@pancakeswap/uikit'
-import { useAuth, useSetProfile, useUserProfile } from 'state/hooks'
+import { useSetProfile, useUserProfile } from 'state/hooks'
 import { updateProfile } from 'action/users'
 import useToast from 'hooks/useToast'
 import { isEmpty } from 'utils/form-validation'
@@ -50,8 +50,7 @@ const ProfileForm: React.FC = () => {
 
   const [reload, setReload] = useState(true)
 
-  const { userEmail } = useAuth()
-  useSetProfile(reload, userEmail)
+  useSetProfile(reload)
   const { profile } = useUserProfile()
   const { toastWarning, toastSuccess } = useToast()
 

@@ -51,14 +51,14 @@ export const useAuth = (): AuthState => {
 }
 // Profile
 
-export const useSetProfile = (state, email) => {
+export const useSetProfile = (state) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    getUserProfile(email).then((value) => {
+    getUserProfile().then((value) => {
       if (value.success) dispatch(setUserProfile(value.data))
     })
-  }, [dispatch, state, email])
+  }, [dispatch, state])
 }
 
 export const useUserProfile = () => {
