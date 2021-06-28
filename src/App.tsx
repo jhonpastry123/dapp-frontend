@@ -44,9 +44,18 @@ const App: React.FC = () => {
   let userInfo = { useremail: '', userrole: '' }
   if (!isEmpty(token)) {
     const decode = jwt.decode(token)
-    setAuthToken(token)
-    const { useremail, userrole } = decode
-    userInfo = { useremail, userrole }
+
+    const currentTime = Date.now() / 1000 + 600
+    console.log(currentTime)
+    console.log(decode.exp)
+    if (decode.exp < currentTime) {
+      setAuthToken('')
+      localStorage.removeItem('auth_token')
+    } else {
+      const { useremail, userrole } = decode
+      userInfo = { useremail, userrole }
+      setAuthToken(token)
+    }
   }
   useSetAuth(userInfo)
 
