@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import { Router, Redirect, Switch } from 'react-router-dom'
 import { PrivateRoute, CommonRouter } from 'components/Router/index'
 import { ResetCSS } from '@pancakeswap/uikit'
@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 import SuspenseWithChunkError from 'components/SuspenseWithChunkError'
 import PageLoader from 'components/PageLoader'
 import BigNumber from 'bignumber.js'
-import { isEmpty } from 'utils/form-validation'
+import { auth } from 'firebaseClient/firebase'
 import Logout from 'components/Logout/logout'
 import setAuthToken from 'utils/setAuthToken'
 import { useSetAuth } from 'state/hooks'
@@ -40,23 +40,25 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  const token = localStorage.getItem('auth_token')
-  let userInfo = { useremail: '', userrole: '' }
-  if (!isEmpty(token)) {
-    const decode = jwt.decode(token)
+  const [userInfo, setUserInfo] = useState({ useremail: '', userrole: '' })
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const token = localStorage.getItem('auth_token')
+        const decode = jwt.decode(token)
+        if (token) {
+          const { useremail, userrole } = decode
+          setUserInfo({ useremail, userrole })
+          setAuthToken(token)
+        }
+      } else {
+        localStorage.removeItem('auth_token')
+        setAuthToken('')
+      }
+    })
 
-    const currentTime = Date.now() / 1000
-    console.log(currentTime)
-    console.log(decode.exp)
-    if (decode.exp < currentTime) {
-      setAuthToken('')
-      localStorage.removeItem('auth_token')
-    } else {
-      const { useremail, userrole } = decode
-      userInfo = { useremail, userrole }
-      setAuthToken(token)
-    }
-  }
+    return unsubscribe
+  }, [])
   useSetAuth(userInfo)
 
   return (

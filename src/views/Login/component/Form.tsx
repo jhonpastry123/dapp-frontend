@@ -10,6 +10,7 @@ import history from 'routerHistory'
 import { getBrowser, getOS, getIp } from 'utils/getBrowser'
 import jwt from 'jsonwebtoken'
 import setAuthToken from 'utils/setAuthToken'
+import { auth } from 'firebaseClient/firebase'
 
 // import { Input, Checkbox, Button, Text } from '@pancakeswap/uikit'
 
@@ -75,22 +76,35 @@ const Login: React.FC = () => {
       return
     }
     setSending(true)
-    getIp().then((ip) => {
-      const deviceInfo = { ip, browser: getBrowser(), os: getOS() }
-      signIn(email, password, deviceInfo).then((data) => {
-        setSending(false)
-        if (isEmpty(data.success)) return
-        if (data.success) {
-          toastSuccess(t('Login'), t('Welcome!!!'))
-          localStorage.setItem('auth_token', data.token)
-          setAuthToken(data.token)
-          const decode = jwt.decode(data.token)
-          setToken(decode)
-        } else {
-          toastWarning(t('Login Error'), data.message)
-        }
+
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const {
+          user: { emailVerified },
+        } = userCredential
+
+        getIp().then((ip) => {
+          const deviceInfo = { ip, browser: getBrowser(), os: getOS() }
+          signIn(email, emailVerified, deviceInfo).then((data) => {
+            setSending(false)
+            if (isEmpty(data.success)) return
+            if (data.success) {
+              toastSuccess(t('Login'), t('Welcome!!!'))
+              localStorage.setItem('auth_token', data.token)
+              setAuthToken(data.token)
+              const decode = jwt.decode(data.token)
+              setToken(decode)
+            } else {
+              toastWarning(t('Login Error'), data.message)
+            }
+          })
+        })
       })
-    })
+      .catch((err) => {
+        toastWarning(t('Login Error'), err.message)
+      })
+    setSending(false)
   }
   useEffect(() => {
     if (authState.isAuthenticated) history.push('/')
