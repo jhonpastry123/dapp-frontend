@@ -12,7 +12,6 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useRefresh from 'hooks/useRefresh'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
-import { isEmpty } from 'utils/form-validation'
 import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,

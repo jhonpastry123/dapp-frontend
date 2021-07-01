@@ -85,11 +85,11 @@ const Login: React.FC = () => {
           getIp().then((ip) => {
             const deviceInfo = { ip, browser: getBrowser(), os: getOS() }
             setAuthToken(idToken)
-            console.log(1, idToken)
             signIn(deviceInfo, idToken).then((data) => {
               setSending(false)
               if (isEmpty(data.success)) return
               if (data.success) {
+                localStorage.setItem("auth_token",idToken);
                 toastSuccess(t('Login'), t('Welcome!!!'))
                 setToken(data.userData)
               } else {

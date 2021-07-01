@@ -51,6 +51,8 @@ const App: React.FC = () => {
             const { email, role } = idTokenResult.claims
             setUserInfo({ useremail: email, userrole: role })
             setAuthToken(idTokenResult.token)
+            localStorage.setItem("auth_token",idTokenResult.token);
+
           })
           .catch((error) => {
             console.log(error)
@@ -59,6 +61,8 @@ const App: React.FC = () => {
         //
       } else {
         await setAuthToken('')
+        localStorage.removeItem("auth_token");
+
       }
     })
 
