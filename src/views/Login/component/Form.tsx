@@ -89,7 +89,6 @@ const Login: React.FC = () => {
               setSending(false)
               if (isEmpty(data.success)) return
               if (data.success) {
-                localStorage.setItem("auth_token",idToken);
                 toastSuccess(t('Login'), t('Welcome!!!'))
                 setToken(data.userData)
               } else {

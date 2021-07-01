@@ -2,7 +2,6 @@ import React, { lazy, useEffect, useState } from 'react'
 import { Router, Redirect, Switch } from 'react-router-dom'
 import { PrivateRoute, CommonRouter } from 'components/Router/index'
 import { ResetCSS } from '@pancakeswap/uikit'
-import jwt from 'jsonwebtoken'
 import SuspenseWithChunkError from 'components/SuspenseWithChunkError'
 import PageLoader from 'components/PageLoader'
 import BigNumber from 'bignumber.js'
@@ -51,7 +50,6 @@ const App: React.FC = () => {
             const { email, role } = idTokenResult.claims
             setUserInfo({ useremail: email, userrole: role })
             setAuthToken(idTokenResult.token)
-            localStorage.setItem("auth_token",idTokenResult.token);
 
           })
           .catch((error) => {
@@ -61,7 +59,6 @@ const App: React.FC = () => {
         //
       } else {
         await setAuthToken('')
-        localStorage.removeItem("auth_token");
 
       }
     })
