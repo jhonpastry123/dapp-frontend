@@ -44,16 +44,21 @@ const App: React.FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const token = localStorage.getItem('auth_token')
-        const decode = jwt.decode(token)
-        if (token) {
-          const { useremail, userrole } = decode
-          setUserInfo({ useremail, userrole })
-          setAuthToken(token)
-        }
+        await auth.currentUser
+          .getIdTokenResult()
+          .then((idTokenResult) => {
+            // Confirm the user is an Admin.
+            const { email, role } = idTokenResult.claims
+            setUserInfo({ useremail: email, userrole: role })
+            setAuthToken(idTokenResult.token)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
+        //
       } else {
-        localStorage.removeItem('auth_token')
-        setAuthToken('')
+        await setAuthToken('')
       }
     })
 

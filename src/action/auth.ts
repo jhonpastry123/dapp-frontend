@@ -13,9 +13,9 @@ export const signUp = (useremail, username) => {
     })
 }
 
-export const signIn = (useremail, emailVerified, deviceInfo) =>
+export const signIn = (deviceInfo, idToken) =>
   axios
-    .post(`${SERVER_URL}/login`, { useremail, emailVerified, ...deviceInfo })
+    .post(`${SERVER_URL}/login`, { idToken, ...deviceInfo })
     .then((res) => {
       return res.data
     })

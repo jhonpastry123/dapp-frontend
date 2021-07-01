@@ -8,7 +8,6 @@ const ExpandableSectionButton: React.FC = () => {
   useSetAuth(userInfo)
   setAuthToken('')
   useEffect(() => {
-    localStorage.removeItem('auth_token')
     auth.signOut()
   }, [])
   return <div> </div>
