@@ -2,7 +2,6 @@ import React, { lazy, useEffect, useState } from 'react'
 import { Router, Redirect, Switch } from 'react-router-dom'
 import { PrivateRoute, CommonRouter } from 'components/Router/index'
 import { ResetCSS } from '@pancakeswap/uikit'
-import jwt from 'jsonwebtoken'
 import SuspenseWithChunkError from 'components/SuspenseWithChunkError'
 import PageLoader from 'components/PageLoader'
 import BigNumber from 'bignumber.js'
@@ -45,16 +44,23 @@ const App: React.FC = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const token = localStorage.getItem('auth_token')
-        const decode = jwt.decode(token)
-        if (token) {
-          const { useremail, userrole } = decode
-          setUserInfo({ useremail, userrole })
-          setAuthToken(token)
-        }
+        await auth.currentUser
+          .getIdTokenResult()
+          .then((idTokenResult) => {
+            // Confirm the user is an Admin.
+            const { email, role } = idTokenResult.claims
+            setUserInfo({ useremail: email, userrole: role })
+            setAuthToken(idTokenResult.token)
+
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
+        //
       } else {
-        localStorage.removeItem('auth_token')
-        setAuthToken('')
+        await setAuthToken('')
+
       }
     })
 

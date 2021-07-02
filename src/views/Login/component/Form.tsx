@@ -80,24 +80,21 @@ const Login: React.FC = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        const {
-          user: { emailVerified },
-        } = userCredential
-
-        getIp().then((ip) => {
-          const deviceInfo = { ip, browser: getBrowser(), os: getOS() }
-          signIn(email, emailVerified, deviceInfo).then((data) => {
-            setSending(false)
-            if (isEmpty(data.success)) return
-            if (data.success) {
-              toastSuccess(t('Login'), t('Welcome!!!'))
-              localStorage.setItem('auth_token', data.token)
-              setAuthToken(data.token)
-              const decode = jwt.decode(data.token)
-              setToken(decode)
-            } else {
-              toastWarning(t('Login Error'), data.message)
-            }
+        const { user } = userCredential
+        user.getIdToken(true).then((idToken) => {
+          getIp().then((ip) => {
+            const deviceInfo = { ip, browser: getBrowser(), os: getOS() }
+            setAuthToken(idToken)
+            signIn(deviceInfo, idToken).then((data) => {
+              setSending(false)
+              if (isEmpty(data.success)) return
+              if (data.success) {
+                toastSuccess(t('Login'), t('Welcome!!!'))
+                setToken(data.userData)
+              } else {
+                toastWarning(t('Login Error'), data.message)
+              }
+            })
           })
         })
       })
