@@ -32,6 +32,7 @@ const Team = lazy(() => import('./views/Teams/Team'))
 const TradingCompetition = lazy(() => import('./views/TradingCompetition'))
 const Predictions = lazy(() => import('./views/Predictions'))
 const UserList = lazy(() => import('./views/UserList'))
+const KYC = lazy(() => import('./views/KYC'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -99,6 +100,9 @@ const App: React.FC = () => {
           </PrivateRoute>
           <PrivateRoute path="/teams/:id">
             <Team />
+          </PrivateRoute>
+          <PrivateRoute path="/submitKyc">
+            <KYC />
           </PrivateRoute>
           <PrivateRoute path="/profile">
             <Profile />
