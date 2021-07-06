@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Box, Radio } from '@pancakeswap/uikit'
+import { Text, Radio } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 
@@ -24,16 +24,46 @@ const FilterSubContainer = styled.div`
 const StyledRadio = styled(Radio)`
   margin-right:20px;
 `
-const Paso3 = () => {
+const Paso3 = ({
+    radio1,
+    setRadio1,
+    radio2,
+    setRadio2,
+    radio3,
+    setRadio3,
+    radio4,
+    setRadio4,
+    radio5,
+    setRadio5,
+    radio6,
+    setRadio6,
+}) => {
     const { t } = useTranslation();
-    const [radio, setRadio] = React.useState("one");
-    const [radioSm, setRadioSm] = React.useState("one");
 
-    const handleChange = (evt) => {
-
-        console.info("fired");
+    const handleChange = (key, evt) => {
         const { value } = evt.target;
-        setRadio(value);
+        switch (key) {
+            case "radio1":
+                setRadio1(value);
+                break;
+            case "radio2":
+                setRadio2(value);
+                break;
+            case "radio3":
+                setRadio3(value);
+                break;
+            case "radio4":
+                setRadio4(value);
+                break;
+            case "radio5":
+                setRadio5(value);
+                break;
+            case "radio6":
+                setRadio6(value);
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -53,11 +83,11 @@ const Paso3 = () => {
                 </Text>
                 <FilterContainer>
                     <Filter>
-                        <StyledRadio name="md" value="one" onChange={handleChange} checked={radio === "one"} />
+                        <StyledRadio name="radio1" value="0" onChange={(e) => { handleChange("radio1", e) }} checked={radio1 === "0"} />
                         <Text ml="4px">{t('SI')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="two" onChange={handleChange} checked={radio === "two"} />
+                        <StyledRadio name="radio1" value="1" onChange={(e) => { handleChange("radio1", e) }} checked={radio1 === "1"} />
                         <Text ml="4px">{t('NO')}</Text>
                     </Filter>
                 </FilterContainer>
@@ -71,11 +101,11 @@ const Paso3 = () => {
                 </Text>
                 <FilterContainer>
                     <Filter>
-                        <StyledRadio name="md" value="one" onChange={handleChange} checked={radio === "one"} />
+                        <StyledRadio name="radio2" value="0" onChange={(e) => { handleChange("radio2", e) }} checked={radio2 === "0"} />
                         <Text ml="4px">{t('SI')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="two" onChange={handleChange} checked={radio === "two"} />
+                        <StyledRadio name="radio2" value="1" onChange={(e) => { handleChange("radio2", e) }} checked={radio2 === "1"} />
                         <Text ml="4px">{t('NO')}</Text>
                     </Filter>
                 </FilterContainer>
@@ -89,11 +119,11 @@ const Paso3 = () => {
                 </Text>
                 <FilterContainer>
                     <Filter>
-                        <StyledRadio name="md" value="one" onChange={handleChange} checked={radio === "one"} />
+                        <StyledRadio name="radio3" value="0" onChange={(e) => { handleChange("radio3", e) }} checked={radio3 === "0"} />
                         <Text ml="4px">{t('SI')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="two" onChange={handleChange} checked={radio === "two"} />
+                        <StyledRadio name="radio3" value="1" onChange={(e) => { handleChange("radio3", e) }} checked={radio3 === "1"} />
                         <Text ml="4px">{t('NO')}</Text>
                     </Filter>
                 </FilterContainer>
@@ -107,19 +137,19 @@ const Paso3 = () => {
                 </Text>
                 <FilterContainer>
                     <Filter>
-                        <StyledRadio name="md" value="one" onChange={handleChange} checked={radio === "one"} />
+                        <StyledRadio name="radio4" value="0" onChange={(e) => { handleChange("radio4", e) }} checked={radio4 === "0"} />
                         <Text ml="4px">{t('Menos del 25%')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="two" onChange={handleChange} checked={radio === "two"} />
+                        <StyledRadio name="radio4" value="1" onChange={(e) => { handleChange("radio4", e) }} checked={radio4 === "1"} />
                         <Text ml="4px">{t('Entre el 25 y 50%')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="three" onChange={handleChange} checked={radio === "three"} />
+                        <StyledRadio name="radio4" value="2" onChange={(e) => { handleChange("radio4", e) }} checked={radio4 === "2"} />
                         <Text ml="4px">{t('Entre el 50 y 75%')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="four" onChange={handleChange} checked={radio === "four"} />
+                        <StyledRadio name="radio4" value="3" onChange={(e) => { handleChange("radio4", e) }} checked={radio4 === "3"} />
                         <Text ml="4px">{t('Más del 75%')}</Text>
                     </Filter>
                 </FilterContainer>
@@ -133,24 +163,24 @@ const Paso3 = () => {
                 </Text>
                 <FilterContainer>
                     <Filter>
-                        <StyledRadio name="md" value="one" onChange={handleChange} checked={radio === "one"} />
+                        <StyledRadio name="radio5" value="0" onChange={(e) => { handleChange("radio5", e) }} checked={radio5 === "0"} />
                         <Text ml="4px">{t('No tengo Ingresons periódicos')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="two" onChange={handleChange} checked={radio === "two"} />
+                        <StyledRadio name="radio5" value="1" onChange={(e) => { handleChange("radio5", e) }} checked={radio5 === "1"} />
                         <Text ml="4px">{t('Prestación por Jubilación o Incapacidad')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="three" onChange={handleChange} checked={radio === "three"} />
+                        <StyledRadio name="radio5" value="2" onChange={(e) => { handleChange("radio5", e) }} checked={radio5 === "2"} />
                         <Text ml="4px">{t('Actividad laboral')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="four" onChange={handleChange} checked={radio === "four"} />
+                        <StyledRadio name="radio5" value="3" onChange={(e) => { handleChange("radio5", e) }} checked={radio5 === "3"} />
                         <Text ml="4px">{t('Rentas de blenes Inmuebles en propiedad')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="five" onChange={handleChange} checked={radio === "five"} />
-                        <Text ml="4px">{t('Rendimientos de Inversiones financieras')}</Text>
+                        <StyledRadio name="radio5" value="4" onChange={(e) => { handleChange("radio5", e) }} checked={radio5 === "4"} />
+                        <Text ml="4px">{t('Rendimientos de Inversi0s financieras')}</Text>
                     </Filter>
                 </FilterContainer>
                 <Text color="#ff0000" fontSize="25px">
@@ -163,19 +193,19 @@ const Paso3 = () => {
                 </Text>
                 <FilterContainer>
                     <Filter>
-                        <StyledRadio name="md" value="one" onChange={handleChange} checked={radio === "one"} />
-                        <Text ml="4px">{t('Recolocar Inversiones flnancieras existentes')}</Text>
+                        <StyledRadio name="radio6" value="0" onChange={(e) => { handleChange("radio6", e) }} checked={radio6 === "0"} />
+                        <Text ml="4px">{t('Recolocar Inversi0s flnancieras existentes')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="two" onChange={handleChange} checked={radio === "two"} />
+                        <StyledRadio name="radio6" value="1" onChange={(e) => { handleChange("radio6", e) }} checked={radio6 === "1"} />
                         <Text ml="4px">{t('Herencia o donación')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="three" onChange={handleChange} checked={radio === "three"} />
+                        <StyledRadio name="radio6" value="2" onChange={(e) => { handleChange("radio6", e) }} checked={radio6 === "2"} />
                         <Text ml="4px">{t('Ingresos por Negoclos')}</Text>
                     </Filter>
                     <Filter>
-                        <StyledRadio name="md" value="four" onChange={handleChange} checked={radio === "four"} />
+                        <StyledRadio name="radio6" value="3" onChange={(e) => { handleChange("radio6", e) }} checked={radio6 === "3"} />
                         <Text ml="4px">{t('Otro origen')}</Text>
                     </Filter>
                 </FilterContainer>

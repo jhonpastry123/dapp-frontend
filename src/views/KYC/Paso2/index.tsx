@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Input, Radio } from '@pancakeswap/uikit'
+import { Text, Input } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import PhoneInput from 'react-phone-input-2'
@@ -8,12 +8,6 @@ import Switch from '@material-ui/core/Switch';
 
 const StyledText30 = styled(Text)`
   margin-bottom: 30px;
-`
-const FormDiv = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 15px;
 `
 const Row = styled.div`
   width: 70%;
@@ -36,22 +30,34 @@ const Filter = styled.label`
   margin-right: 16px;
 `
 
-const Paso2 = () => {
+const Paso2 = ({
+    name,
+    apellido,
+    birthDay,
+    phone,
+    country,
+    town,
+    postal,
+    direction,
+    nationality,
+    UScitizen,
+    citizen,
+    setName,
+    setApellido,
+    setBirthday,
+    setPhone,
+    setCountry,
+    setTown,
+    setPostal,
+    setDirection,
+    setNationality,
+    setUScitizen,
+    setCitizen,
+}) => {
     const { t } = useTranslation();
-    const [name, setName] = React.useState("");
-    const [apellido, setApellido] = React.useState("");
-    const [birthDay, setBirthday] = React.useState("");
-    const [phone, setPhone] = React.useState("");
-    const [country, setCountry] = React.useState("")
-    const [town, setTown] = React.useState("")
-    const [postal, setPostal] = React.useState("")
-    const [direction, setDirection] = React.useState("")
-    const [nationality, setNationality] = React.useState("")
-    const [UScitizen, setUScitizen] = React.useState(false)
-    const [citizen, setCitizen] = React.useState(false)
 
-    const handleChangePhoneNumber = () => {
-        console.log('changing phone number')
+    const handleChangePhoneNumber = (num) => {
+        setPhone(num);
     }
 
     return (
@@ -164,14 +170,6 @@ const Paso2 = () => {
                     />
                 </Row>
                 <Row>
-                    {/* <Filter>
-                        <Radio
-                            scale="sm"
-                            checked={UScitizen}
-                            onChange={() => { setUScitizen(!UScitizen) }}
-                        />
-                        <Text ml="4px">{t('Eres ciudadano de EEUU?')}</Text>
-                    </Filter> */}
                     <Filter>
                         <Switch
                             checked={UScitizen}

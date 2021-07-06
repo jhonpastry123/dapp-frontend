@@ -8,7 +8,6 @@ import { signIn } from 'action/auth'
 import { useAuth, useSetAuth } from 'state/hooks'
 import history from 'routerHistory'
 import { getBrowser, getOS, getIp } from 'utils/getBrowser'
-import jwt from 'jsonwebtoken'
 import setAuthToken from 'utils/setAuthToken'
 import { auth } from 'firebaseClient/firebase'
 
@@ -89,6 +88,7 @@ const Login: React.FC = () => {
               setSending(false)
               if (isEmpty(data.success)) return
               if (data.success) {
+                localStorage.setItem("email", email);
                 toastSuccess(t('Login'), t('Welcome!!!'))
                 setToken(data.userData)
               } else {

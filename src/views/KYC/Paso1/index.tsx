@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, Box } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 
 const StyledText30 = styled(Text)`
@@ -11,7 +10,6 @@ const StyledBox = styled(Box)`
 `
 
 const Paso1 = () => {
-    const { t } = useTranslation();
 
     return (
         <>
