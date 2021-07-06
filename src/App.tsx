@@ -43,7 +43,10 @@ const App: React.FC = () => {
   const [userInfo, setUserInfo] = useState({ useremail: '', userrole: '' })
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      console.log(user)
       if (user) {
+        console.log(user)
+
         await auth.currentUser
           .getIdTokenResult()
           .then((idTokenResult) => {
@@ -51,7 +54,6 @@ const App: React.FC = () => {
             const { email, role } = idTokenResult.claims
             setUserInfo({ useremail: email, userrole: role })
             setAuthToken(idTokenResult.token)
-
           })
           .catch((error) => {
             console.log(error)
@@ -60,7 +62,6 @@ const App: React.FC = () => {
         //
       } else {
         await setAuthToken('')
-
       }
     })
 
